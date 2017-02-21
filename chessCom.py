@@ -55,6 +55,127 @@ class chessCom:
 			return choice(bestMoves)
 		except:
 			return choice(first)
+
+	def MINIMAX-DECISION(self,guiBoard,color):
+		ACTIONS = []   # inital Position, Final Position
+		myPieces = []  # location, value
+
+		if color == "Black":
+			antiColor = "White"
+		else:
+			antiColor = "Black"
+
+
+		for r in range(len(temp)):
+			for c in range(len(temp[r])):
+				if temp[r][c] != 0:
+					if color == guiBoard.pieces[temp[r][c]][1]:
+						myPieces.append([[r,c],temp[r][c]])
+
+		for p in self.myPieces:
+			if p[1]%6 == 1:
+				ACTIONS.append(guiBoard.detPonSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 2:
+				ACTIONS.append(guiBoard.detKnightSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 3:
+				ACTIONS.append(guiBoard.detBishopSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 4:
+				ACTIONS.append(guiBoard.detRookSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 5:
+				ACTIONS.append(guiBoard.detQueenSpaces(temp,p[0],antiColor)[:])
+			else:
+				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])
+				
+
+		for action in ACTIONS:
+			new_state = simulateAction(guiBoard,action[0],action[1])								
+			value = MIN_VALUE(new_state,4,antiColor) 
+			if value > maxValue
+				bestAction = action
+
+		return bestAction		
+
+	def MIN-VALUE(self,board,depth,color):
+		ACTIONS = []  # initial position, final position
+		myPieces = [] #location, value	
+
+		if depth == 0:
+			return evaluation_function(self,board,depth,color)
+
+		if color == "Black":
+			antiColor = "White"
+		else:
+			antiColor = "Black"
+
+
+		for r in range(len(temp)):
+			for c in range(len(temp[r])):
+				if temp[r][c] != 0:
+					if color == guiBoard.pieces[temp[r][c]][1]:
+						myPieces.append([[r,c],temp[r][c]])
+
+		for p in self.myPieces:
+			f p[1]%6 == 1:
+				ACTIONS.append(guiBoard.detPonSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 2:
+				ACTIONS.append(guiBoard.detKnightSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 3:
+				ACTIONS.append(guiBoard.detBishopSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 4:
+				ACTIONS.append(guiBoard.detRookSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 5:
+				ACTIONS.append(guiBoard.detQueenSpaces(temp,p[0],antiColor)[:])
+			else:
+				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])	
+
+		for action in ACTIONS:
+			new_state = simulateAction(guiBoard,action[0],action[1])								
+			value = MAX_VALUE(new_state,depth,antiColor) 
+			if value < maxValue
+				bestAction = action
+
+		return bestAction	
+
+
+	def MAX_VALUE(self,board, depth,color):
+		ACTIONS = []  # initial position, final position
+		myPieces = [] #location, value	
+
+		if depth == 0:
+			return evaluation_function(self,board,color)
+
+		if color == "Black":
+			antiColor = "White"
+		else:
+			antiColor = "Black"
+
+		for r in range(len(temp)):
+			for c in range(len(temp[r])):
+				if temp[r][c] != 0:
+					if color == guiBoard.pieces[temp[r][c]][1]:
+						myPieces.append([[r,c],temp[r][c]])
+
+		for p in self.myPieces:
+			f p[1]%6 == 1:
+				ACTIONS.append(guiBoard.detPonSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 2:
+				ACTIONS.append(guiBoard.detKnightSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 3:
+				ACTIONS.append(guiBoard.detBishopSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 4:
+				ACTIONS.append(guiBoard.detRookSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 5:
+				ACTIONS.append(guiBoard.detQueenSpaces(temp,p[0],antiColor)[:])
+			else:
+				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])	
+
+		for action in ACTIONS:
+			new_state = simulateAction(guiBoard,action[0],action[1])								
+			value = MIN_VALUE(new_state,depth-1,antiColor) 
+			if value > maxValue
+				bestAction = action
+
+		return bestAction								
 		
 	def simulateTurn(self,temp,color,guiBoard):
 		if color == "Black":
@@ -194,10 +315,3 @@ class chessCom:
 		return mobility
 
 							
-		
-
-
-
-
-
-				
