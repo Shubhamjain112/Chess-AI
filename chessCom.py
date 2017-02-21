@@ -4,6 +4,13 @@ from random import choice
 import copy
 
 class chessCom:
+
+	wtKing = 200
+	wtQueen = 9
+	wtRook = 5
+	wtBishop = 3
+	wtKnight = 3
+	wtPawn = 1
 	
 	def makeMove(self,guiBoard,color):
 #		temp = [0]*8
@@ -48,7 +55,7 @@ class chessCom:
 			return choice(bestMoves)
 		except:
 			return choice(first)
-'''		
+		
 	def simulateTurn(self,temp,color,guiBoard):
 		if color == "Black":
 			antiColor = "White"
@@ -106,5 +113,91 @@ class chessCom:
 							value += 5
 						validMoves.append([moveGrid,p[0],m,value,[]])
 		return validMoves	
-					
-	'''			
+
+	def calculate_mobility_material(self,temp,color, guiBoard):
+		if color == "Black":
+			antiColor = "White"
+		else:
+			antiColor = "Black"
+
+		moves = 0
+		antiMoves = 0	
+
+		material = 0
+		antiMaterial = 0
+
+		myPieces = []
+		antiPieces = []
+
+		for r in range(len(temp)):
+			for c in range(len(temp[r])):
+				if temp[r][c] != 0:
+					if color == guiBoard.pieces[temp[r][c]][1]:
+						myPieces.append([[r,c],temp[r][c]])
+					else:
+						antiPieces.append([[r,c],temp[r][c]])	
+		
+		for p in myPieces:
+			if p[1]%6 == 1:
+				possibleMoves = guiBoard.detPonSpaces(temp,p[0],color)[:]
+				moves += len(possibleMoves)
+				material += self.wtPawn
+			elif p[1]%6 == 2:
+				possibleMoves = guiBoard.detKnightSpaces(temp,p[0],color)[:]
+				moves += len(possibleMoves)
+				material += self.wtKnight
+			elif p[1]%6 == 3:
+				possibleMoves = guiBoard.detBishopSpaces(temp,p[0],color)[:]
+				moves += len(possibleMoves)
+				material += self.wtBishop
+			elif p[1]%6 == 4:
+				possibleMoves = guiBoard.detRookSpaces(temp,p[0],color)[:]
+				moves += len(possibleMoves)
+				material += self.wtRook
+			elif p[1]%6 == 5:
+				possibleMoves = guiBoard.detQueenSpaces(temp,p[0],color)[:]
+				moves += len(possibleMoves)
+				material += self.wtQueen
+			else:
+				possibleMoves = guiBoard.detKingSpaces(temp,p[0],color)[:]
+				moves += len(possibleMoves)
+				material += self.wtKing
+
+		for p in antiPieces:
+			if p[1]%6 == 1:
+				possibleMoves = guiBoard.detPonSpaces(temp,p[0],anticolor)[:]
+				antiMoves += len(possibleMoves)
+				antiMaterial += wtPawn
+			elif p[1]%6 == 2:
+				possibleMoves = guiBoard.detKnightSpaces(temp,p[0],anticolor)[:]
+				antiMoves += len(possibleMoves)
+				antiMaterial += wtKnight
+			elif p[1]%6 == 3:
+				possibleMoves = guiBoard.detBishopSpaces(temp,p[0],anticolor)[:]
+				antiMoves += len(possibleMoves)
+				antiMaterial += wtBishop
+			elif p[1]%6 == 4:
+				possibleMoves = guiBoard.detRookSpaces(temp,p[0],anticolor)[:]
+				antiMoves += len(possibleMoves)
+				antiMaterial += wtRook
+			elif p[1]%6 == 5:
+				possibleMoves = guiBoard.detQueenSpaces(temp,p[0],anticolor)[:]
+				antiMoves += len(possibleMoves)
+				antiMaterial += wtQueen
+			else:
+				possibleMoves = guiBoard.detKingSpaces(temp,p[0],anticolor)[:]
+				antiMoves += len(possibleMoves)
+				antiMaterial += wtKing
+
+		mobility = moves - antiMoves
+		mat = material - antiMaterial
+		return mobility
+
+							
+		
+
+
+
+
+
+				
