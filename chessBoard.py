@@ -114,7 +114,7 @@ class chessBoard:
 				else:
 					newPos = [curPos[0]+1,curPos[1]+1]
 					if newPos[0] >= 0 and newPos[1] >= 0:
-						self.viableSpaces.append(newPos)
+						self.viableSpaces.append([curPos,newPos])
 						if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 							self.detViableDiagSpaces(grid,newPos,i,color)
 			except:
@@ -126,7 +126,7 @@ class chessBoard:
 				else:
 					newPos = [curPos[0]+1,curPos[1]-1]
 					if newPos[0] >= 0 and newPos[1] >= 0:
-						self.viableSpaces.append(newPos)
+						self.viableSpaces.append([curPos,newPos])
 						if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 							self.detViableDiagSpaces(grid,newPos,i,color)
 			except:
@@ -138,7 +138,7 @@ class chessBoard:
 				else:
 					newPos = [curPos[0]-1,curPos[1]+1]
 					if newPos[0] >= 0 and newPos[1] >= 0:
-						self.viableSpaces.append(newPos)
+						self.viableSpaces.append([curPos,newPos])
 						if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 							self.detViableDiagSpaces(grid,newPos,i,color)
 			except:
@@ -150,7 +150,7 @@ class chessBoard:
 				else:
 					newPos = [curPos[0]-1,curPos[1]-1]
 					if newPos[0] >= 0 and newPos[1] >= 0:
-						self.viableSpaces.append(newPos)
+						self.viableSpaces.append([curPos,newPos])
 						if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 							self.detViableDiagSpaces(grid,newPos,i,color)
 			except:
@@ -164,7 +164,7 @@ class chessBoard:
 					else:
 						newPos = [curPos[0]+1,curPos[1]]
 						if newPos[0] >= 0 and newPos[1] >= 0:
-							self.viableSpaces.append(newPos)
+							self.viableSpaces.append([curPos,newPos])
 							if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 								self.detViableHorizVertSpaces(grid,newPos,i,color)
 				except:
@@ -176,7 +176,7 @@ class chessBoard:
 					else:
 						newPos = [curPos[0]-1,curPos[1]]
 						if newPos[0] >= 0 and newPos[1] >= 0:
-							self.viableSpaces.append(newPos)
+							self.viableSpaces.append([curPos,newPos])
 							if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 								self.detViableHorizVertSpaces(grid,newPos,i,color)
 				except:
@@ -188,7 +188,7 @@ class chessBoard:
 					else:
 						newPos = [curPos[0],curPos[1]+1]
 						if newPos[0] >= 0 and newPos[1] >= 0:
-							self.viableSpaces.append(newPos)
+							self.viableSpaces.append([curPos.newPos])
 							if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 								self.detViableHorizVertSpaces(grid,newPos,i,color)
 				except:
@@ -200,7 +200,7 @@ class chessBoard:
 					else:
 						newPos = [curPos[0],curPos[1]-1]
 						if newPos[0] >= 0 and newPos[1] >= 0:
-							self.viableSpaces.append(newPos)
+							self.viableSpaces.append([curPos,newPos])
 							if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 								self.detViableHorizVertSpaces(grid,newPos,i,color)
 				except:
@@ -210,27 +210,27 @@ class chessBoard:
 		ponSpaces = []
 		if color == "Black":
 			if 0 <= curPos[0]+1 < 8 and grid[curPos[0]+1][curPos[1]] == 0:
-				ponSpaces.append([curPos[0]+1,curPos[1]])
+				ponSpaces.append([curPos,[curPos[0]+1,curPos[1]]])
 			if 0 <= curPos[0]+2 < 8 and grid[curPos[0]+2][curPos[1]] == 0 and curPos[0] == 1 and grid[curPos[0]+1][curPos[1]] == 0:
-				ponSpaces.append([curPos[0]+2,curPos[1]])
+				ponSpaces.append([curPos,[curPos[0]+2,curPos[1]]])
 			if 0 <= curPos[0]+1 < 8 and 0 <= curPos[1]+1 < 8 and self.pieces[grid[curPos[0]+1][curPos[1]+1]][1] == "White":
-				ponSpaces.append([curPos[0]+1,curPos[1]+1])
+				ponSpaces.append([curPos,[curPos[0]+1,curPos[1]+1]])
 			if 0 <= curPos[0]+1 < 8 and 0 <= curPos[1]-1 < 8 and self.pieces[grid[curPos[0]+1][curPos[1]-1]][1] == "White":
-				ponSpaces.append([curPos[0]+1,curPos[1]-1])
+				ponSpaces.append([curPos,[curPos[0]+1,curPos[1]-1]])
 			return ponSpaces
 		elif color == "White":
 			if 0 <= curPos[0]-1 < 8 and grid[curPos[0]-1][curPos[1]] == 0:
-				ponSpaces.append([curPos[0]-1,curPos[1]])
+				ponSpaces.append([curPos,curPos[0]-1,curPos[1]])
 			if 0 <= curPos[0]-2 < 8 and grid[curPos[0]-2][curPos[1]] == 0 and curPos[0] == 6 and grid[curPos[0]-1][curPos[1]] == 0:
-				ponSpaces.append([curPos[0]-2,curPos[1]])
+				ponSpaces.append([curPos,curPos[0]-2,curPos[1]])
 			if 0 <= curPos[0]-1 < 8 and 0 <= curPos[1]+1 < 8 and self.pieces[grid[curPos[0]-1][curPos[1]+1]][1] == "Black":
-				ponSpaces.append([curPos[0]-1,curPos[1]+1])
+				ponSpaces.append([curPos,[curPos[0]-1,curPos[1]+1]])
 			if 0 <= curPos[0]-1 < 8 and 0 <= curPos[1]-1 < 8 and self.pieces[grid[curPos[0]-1][curPos[1]-1]][1] == "Black":
-				ponSpaces.append([curPos[0]-1,curPos[1]-1])
+				ponSpaces.append([curPos,[curPos[0]-1,curPos[1]-1]])
 			return ponSpaces
 			
 	def detKnightSpaces(self,grid,curPos,color):
-		return [[curPos[0]+2,curPos[1]+1],[curPos[0]+2,curPos[1]-1],[curPos[0]+1,curPos[1]+2],[curPos[0]+1,curPos[1]-2],[curPos[0]-1,curPos[1]+2],[curPos[0]-1,curPos[1]-2],[curPos[0]-2,curPos[1]+1],[curPos[0]-2,curPos[1]-1]]
+		return [[curPos,[curPos[0]+2,curPos[1]+1]],[curPos,[curPos[0]+2,curPos[1]-1]],[curPos,[curPos[0]+1,curPos[1]+2]],[curPos,[curPos[0]+1,curPos[1]-2]],[curPos,[curPos[0]-1,curPos[1]+2]],[curPos,[curPos[0]-1,curPos[1]-2]],[curPos,[curPos[0]-2,curPos[1]+1]],[curPos,[curPos[0]-2,curPos[1]-1]]]
 		
 	def detBishopSpaces(self,grid,curPos,color):
 		self.viableSpaces = []
@@ -252,7 +252,7 @@ class chessBoard:
 		return self.viableSpaces
 		
 	def detKingSpaces(self,grid,curPos,color):
-		return [[curPos[0]+1,curPos[1]],[curPos[0],curPos[1]+1],[curPos[0]-1,curPos[1]],[curPos[0],curPos[1]-1],[curPos[0]+1,curPos[1]+1],[curPos[0]-1,curPos[1]+1],[curPos[0]+1,curPos[1]-1],[curPos[0]-1,curPos[1]-1]]
+		return [[curPos,[curPos[0]+1,curPos[1]]],[curPos,[curPos[0],curPos[1]+1]],[curPos,[curPos[0]-1,curPos[1]]],[curPos,[curPos[0],curPos[1]-1]],[curPos,[curPos[0]+1,curPos[1]+1]],[curPos,[curPos[0]-1,curPos[1]+1]],[curPos,[curPos[0]+1,curPos[1]-1]],[curPos,[curPos[0]-1,curPos[1]-1]]]
 					
 	def inCheck(self, grid, color):
 		for r in range(len(grid)):
