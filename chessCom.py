@@ -73,8 +73,14 @@ class chessCom:
 				ACTIONS.append(guiBoard.detQueenSpaces(temp,p[0],antiColor)[:])
 			else:
 				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])
+
+		Actions2 = [];
+		for action in ACTIONS:
+			for act in action:
+				Actions2.append(act)
+
+		print(Actions2)
 				
-		print (ACTIONS)
 
 		for action in ACTIONS:
 			print (action)
