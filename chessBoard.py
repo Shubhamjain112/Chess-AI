@@ -64,8 +64,9 @@ class chessBoard:
 			self.viableSpaces = []
 			for i in range(4):
 				self.detViableDiagSpaces(grid,curPos,i,color)
-			if finPos in self.viableSpaces:
-				return True
+			for pos in self.viableSpaces:
+				if pos[1] == finPos:
+					return True
 		#Rook rules ___________________________________________________________________________________________
 		elif ID == 4:
 			if self.pieces[grid[curPos[0]][curPos[1]]][1] == 'Black':
@@ -77,8 +78,9 @@ class chessBoard:
 			self.viableSpaces = []
 			for i in range(4):
 				self.detViableHorizVertSpaces(grid,curPos,i,color)
-			if finPos in self.viableSpaces:
-				return True
+			for pos in self.viableSpaces:
+				if pos[1] == finPos:
+					return True
 		#Queen rules ___________________________________________________________________________________________
 		elif ID == 5:
 			if self.pieces[grid[curPos[0]][curPos[1]]][1] == 'Black':
@@ -91,8 +93,9 @@ class chessBoard:
 			for i in range(4):
 				self.detViableHorizVertSpaces(grid,curPos,i,color)
 				self.detViableDiagSpaces(grid,curPos,i,color)
-			if finPos in self.viableSpaces:
-				return True
+			for pos in self.viableSpaces:
+				if pos[1] == finPos:
+					return True
 		#King rules ___________________________________________________________________________________________
 		elif ID == 0:
 			if grid[curPos[0]][curPos[1]] != 0:

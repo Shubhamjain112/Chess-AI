@@ -34,8 +34,9 @@ class chessCom:
 			antiColor = "Black"
 		move = [[]]
 		start = time.time()
-		move2 = self.MINIMAX_DECISION(guiBoard,color)
-		move3 = move + move2
+		move2 = self.ABMINIMAX_DECISION(guiBoard,color,-100000,100000)
+		move4 = move2[1]
+		move3 = move + move4
 		print("--- %s seconds ---" % (time.time()-start)) 
 		print(move3)
 		return move3
@@ -228,7 +229,226 @@ class chessCom:
 			if value > maxValue:
 				maxValue = value
 
-		return maxValue							
+		return maxValue	
+
+
+## alpha beta pruning here
+
+
+	def ABMINIMAX_DECISION(self,guiBoard,color,a,b):
+		alpha = a
+		beta = b
+		temp = copy.deepcopy(guiBoard.grid)
+		maxValue = -10000
+		ACTIONS = []   # inital Position, Final Position
+		myPieces = []  # location, value
+
+		if color == "Black":
+			antiColor = "White"
+		else:
+			antiColor = "Black"
+
+
+		for r in range(len(temp)):
+			for c in range(len(temp[r])):
+				if temp[r][c] != 0:
+					if color == guiBoard.pieces[temp[r][c]][1]:
+						myPieces.append([[r,c],temp[r][c]])
+
+		#print(myPieces)
+
+		for p in myPieces:
+			if p[1]%6 == 1:
+				ACTIONS.append(guiBoard.detPonSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 2:
+				ACTIONS.append(guiBoard.detKnightSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 3:
+				ACTIONS.append(guiBoard.detBishopSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 4:
+				ACTIONS.append(guiBoard.detRookSpaces(temp,p[0],antiColor)[:])
+			elif p[1]%6 == 5:
+				ACTIONS.append(guiBoard.detQueenSpaces(temp,p[0],antiColor)[:])
+			else:
+				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])
+
+		Actions2 = [];
+		for action in ACTIONS:
+			for act in action:
+				if len(act) != 0 and act[1][0] >= 0 and act[1][1] >= 0 and act[1][0] < 8 and act[1][1] < 8:
+					Actions2.append(act)
+
+		#print(Actions2)
+				
+
+		for action in Actions2:
+			initial = action[0]
+			final = action[1]
+			new_grid = self.simulateAction(guiBoard,initial,final)								
+			tt = self.ABMIN_VALUE(guiBoard,new_grid,3,antiColor,alpha,beta) 
+			value = tt[0]
+			if value > maxValue:
+				value = maxValue
+				bestAction = action
+
+			if maxValue>=beta:
+				return [maxValue,bestAction]
+
+			if maxValue>alpha:
+				alpha = maxValue
+
+		return [maxValue,bestAction]
+
+	def ABMIN_VALUE(self,guiBoard,grid,depth,color,a,b):
+		alpha = a
+		beta = b
+		if depth == 0:
+			#print("here")
+			return [self.evaluation_function(guiBoard,grid,color),[]]
+
+
+
+		minValue = 10000
+		ACTIONS = []  # initial position, final position
+		myPieces = [] #location, value	
+		temp = copy.deepcopy(grid)
+		temp2 = []
+
+		#print("IN MIN")
+		#print(depth)
+
+
+
+		if color == "Black":
+			antiColor = "White"
+		else:
+			antiColor = "Black"
+
+
+		
+
+
+
+		for r in range(len(temp)):
+			for c in range(len(temp[r])):
+				if temp[r][c] != 0:
+					if color == guiBoard.pieces[temp[r][c]][1]:
+						myPieces.append([[r,c],temp[r][c]])
+
+
+		#print(myPieces)				
+
+
+
+		for p in myPieces:
+			if p[1]%6 == 1:
+				ACTIONS.append(guiBoard.detPonSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 2:
+				ACTIONS.append(guiBoard.detKnightSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 3:
+				ACTIONS.append(guiBoard.detBishopSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 4:
+				ACTIONS.append(guiBoard.detRookSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 5:
+				ACTIONS.append(guiBoard.detQueenSpaces(temp,p[0],color)[:])
+			else:
+				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])	
+
+		Actions2 = [];
+		for action in ACTIONS:
+			for act in action:
+				if len(act) != 0 and act[1][0] >= 0 and act[1][1] >= 0 and act[1][0] < 8 and act[1][1] < 8:
+					Actions2.append(act)
+		
+
+		bestAction = []			
+		for action in Actions2:
+			new_grid = self.simulateAction(guiBoard,action[0],action[1])								
+			tt = self.ABMAX_VALUE(guiBoard,new_grid, depth-1 ,antiColor,alpha,beta) 
+			value = tt[0]
+			if value < minValue:
+				minValue = value 
+				bestAction = action
+
+			if minValue<=alpha:
+				return [minValue,bestAction]	
+
+			if beta > minValue:
+				beta = minValue
+
+		return [minValue,bestAction]	
+
+
+	def ABMAX_VALUE(self,guiBoard,grid,depth,color,a,b):
+		alpha = a
+		beta = b
+		if depth == 0:
+			return [self.evaluation_function(guiBoard,grid,color),[]]
+
+		maxValue = -10000
+		ACTIONS = []  # initial position, final position
+		myPieces = [] #location, value	
+		temp = copy.deepcopy(grid)
+
+		#print("IN MAX")
+
+		if color == "Black":
+			antiColor = "White"
+		else:
+			antiColor = "Black"
+
+		for r in range(len(temp)):
+			for c in range(len(temp[r])):
+				if temp[r][c] != 0:
+					if color == guiBoard.pieces[temp[r][c]][1]:
+						myPieces.append([[r,c],temp[r][c]])
+
+		
+		#print(depth)
+		
+
+
+		for p in myPieces:
+			if p[1]%6 == 1:
+				ACTIONS.append(guiBoard.detPonSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 2:
+				ACTIONS.append(guiBoard.detKnightSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 3:
+				ACTIONS.append(guiBoard.detBishopSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 4:
+				ACTIONS.append(guiBoard.detRookSpaces(temp,p[0],color)[:])
+			elif p[1]%6 == 5:
+				ACTIONS.append(guiBoard.detQueenSpaces(temp,p[0],color)[:])
+			else:
+				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])	
+
+		Actions2 = [];
+		for action in ACTIONS:
+			for act in action:
+				if len(act) != 0 and act[1][0] >= 0 and act[1][1] >= 0 and act[1][0] < 8 and act[1][1] < 8:
+					Actions2.append(act)
+
+		#print(len(Actions2))
+
+		for action in Actions2:
+			#print (action)
+			new_grid = self.simulateAction(guiBoard,action[0],action[1])								
+			tt = self.ABMIN_VALUE(guiBoard,new_grid,depth-1, antiColor,alpha,beta) 
+			value = tt[0]
+			if value > maxValue:
+				maxValue = value
+				bestAction = action
+				#alpha = value
+
+			#if beta > alpha:
+			#	return [maxValue,bestAction]
+			if maxValue>=beta:
+				return [maxValue,bestAction]
+
+			if maxValue>alpha:
+				alpha = maxValue
+
+		return [maxValue,bestAction]	
+
 
 	def calculate_mobility_material(self,guiBoard,grid,color):
 		if color == "Black":
