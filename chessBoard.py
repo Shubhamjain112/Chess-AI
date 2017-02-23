@@ -13,7 +13,8 @@ class chessBoard:
 	
 	
 	def __init__(self):
-		self.grid[1] = [1]*8; self.grid[6]=[7]*8
+		self.grid[1] = [1]*8 
+		self.grid[6] = [7]*8
 		self.grid[0][0] = 4; self.grid[0][1] = 2; self.grid[0][2] = 3; self.grid[0][3] = 5;
 		self.grid[0][4] = 6; self.grid[0][5] = 3; self.grid[0][6] = 2; self.grid[0][7] = 4;
 		self.grid[7][0] = 10; self.grid[7][1] = 8; self.grid[7][2] = 9; self.grid[7][3] = 11;
@@ -188,7 +189,7 @@ class chessBoard:
 					else:
 						newPos = [curPos[0],curPos[1]+1]
 						if newPos[0] >= 0 and newPos[1] >= 0 and newPos[0] < 8 and newPos[1] <8:
-							self.viableSpaces.append([curPos.newPos])
+							self.viableSpaces.append([curPos,newPos])
 							if self.pieces[grid[newPos[0]][newPos[1]]][1] != color:
 								self.detViableHorizVertSpaces(grid,newPos,i,color)
 				except:
@@ -220,9 +221,9 @@ class chessBoard:
 			return ponSpaces
 		elif color == "White":
 			if 0 <= curPos[0]-1 < 8 and grid[curPos[0]-1][curPos[1]] == 0:
-				ponSpaces.append([curPos,curPos[0]-1,curPos[1]])
+				ponSpaces.append([curPos,[curPos[0]-1,curPos[1]]])
 			if 0 <= curPos[0]-2 < 8 and grid[curPos[0]-2][curPos[1]] == 0 and curPos[0] == 6 and grid[curPos[0]-1][curPos[1]] == 0:
-				ponSpaces.append([curPos,curPos[0]-2,curPos[1]])
+				ponSpaces.append([curPos,[curPos[0]-2,curPos[1]]])
 			if 0 <= curPos[0]-1 < 8 and 0 <= curPos[1]+1 < 8 and self.pieces[grid[curPos[0]-1][curPos[1]+1]][1] == "Black":
 				ponSpaces.append([curPos,[curPos[0]-1,curPos[1]+1]])
 			if 0 <= curPos[0]-1 < 8 and 0 <= curPos[1]-1 < 8 and self.pieces[grid[curPos[0]-1][curPos[1]-1]][1] == "Black":
@@ -231,7 +232,11 @@ class chessBoard:
 			
 	def detKnightSpaces(self,grid,curPos,color):
 		#check required
-		return [[curPos,[curPos[0]+2,curPos[1]+1]],[curPos,[curPos[0]+2,curPos[1]-1]],[curPos,[curPos[0]+1,curPos[1]+2]],[curPos,[curPos[0]+1,curPos[1]-2]],[curPos,[curPos[0]-1,curPos[1]+2]],[curPos,[curPos[0]-1,curPos[1]-2]],[curPos,[curPos[0]-2,curPos[1]+1]],[curPos,[curPos[0]-2,curPos[1]-1]]]
+		#print("-----------------------------")
+		#print("IN KNIGHT")
+		#print(curPos, color)
+		#print("------------------------------")
+		return [ [curPos,[curPos[0]+2,curPos[1]+1]],[curPos,[curPos[0]+2,curPos[1]-1]],[curPos,[curPos[0]+1,curPos[1]+2]],[curPos,[curPos[0]+1,curPos[1]-2]],[curPos,[curPos[0]-1,curPos[1]+2]],[curPos,[curPos[0]-1,curPos[1]-2]],[curPos,[curPos[0]-2,curPos[1]+1]],[curPos,[curPos[0]-2,curPos[1]-1]] ]
 		
 	def detBishopSpaces(self,grid,curPos,color):
 		self.viableSpaces = []
@@ -254,7 +259,11 @@ class chessBoard:
 		
 	def detKingSpaces(self,grid,curPos,color):
 		#check required
-		return [[curPos,[curPos[0]+1,curPos[1]]],[curPos,[curPos[0],curPos[1]+1]],[curPos,[curPos[0]-1,curPos[1]]],[curPos,[curPos[0],curPos[1]-1]],[curPos,[curPos[0]+1,curPos[1]+1]],[curPos,[curPos[0]-1,curPos[1]+1]],[curPos,[curPos[0]+1,curPos[1]-1]],[curPos,[curPos[0]-1,curPos[1]-1]]]
+		#print("-------------------------------")
+		#print("IN KING")
+		#print(curPos, color)
+		#print("--------------------------------")
+		return [ [curPos,[curPos[0]+1,curPos[1]]],[curPos,[curPos[0],curPos[1]+1]],[curPos,[curPos[0]-1,curPos[1]]],[curPos,[curPos[0],curPos[1]-1]],[curPos,[curPos[0]+1,curPos[1]+1]],[curPos,[curPos[0]-1,curPos[1]+1]],[curPos,[curPos[0]+1,curPos[1]-1]],[curPos,[curPos[0]-1,curPos[1]-1]]]
 					
 	def inCheck(self, grid, color):
 		for r in range(len(grid)):

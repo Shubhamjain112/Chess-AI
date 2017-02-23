@@ -6,7 +6,7 @@ except:
 	from Tkinter import *
 import chessBoard as cb
 import chessCom as com
-	
+
 class App:
 	board = cb.chessBoard()
 	t = 0
@@ -154,7 +154,7 @@ class App:
 								self.canvas.delete(ALL)
 								self.displayBoard()
 		self.Master.update()
-		
+
 root = tk.Tk()
 app = App(root)
 app.canvas.bind("<Button-1>", app.callback)
