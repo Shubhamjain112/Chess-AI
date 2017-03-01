@@ -97,9 +97,12 @@ class chessCom:
 				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])	
 
 		Actions2 = [];
+		print("--------")
+		print(ACTIONS)
+		print("-------")
 		for action in ACTIONS:
 			for act in action:
-				if len(act) != 0 and act[1][0] >= 0 and act[1][1] >= 0 and act[1][0] < 8 and act[1][1] < 8:# and guiBoard.turnValid(temp,act[0],act[1],color):
+				if len(act) != 0 and act[1][0] >= 0 and act[1][1] >= 0 and act[1][0] < 8 and act[1][1] < 8 and guiBoard.moveValid(temp,act[0],act[1]):
 					Actions2.append(act)
 
 
@@ -155,21 +158,25 @@ class chessCom:
 				ACTIONS.append(guiBoard.detKingSpaces(temp,p[0],color)[:])	
 
 		Actions2 = [];
+		print("--------")
+		print(ACTIONS)
+		print("-------")
 
 		#print(ACTIONS)
 		for action in ACTIONS:
 			for act in action:
-				if len(act) != 0 and act[1][0] >= 0 and act[1][1] >= 0 and act[1][0] < 8 and act[1][1] < 8:# and guiBoard.turnValid(temp,act[0],act[1],color):
+				if len(act) != 0 and act[1][0] >= 0 and act[1][1] >= 0 and act[1][0] < 8 and act[1][1] < 8 and guiBoard.moveValid(temp,act[0],act[1]):
 					Actions2.append(act)
 
 		#print(Actions2)
 		#exit()
 		bestAction = []
 		for action in Actions2:
-			#print (action)
+			print (action)
 			new_grid = self.simulateAction(guiBoard,action[0],action[1])								
 			tt = self.ABMIN_VALUE(guiBoard,new_grid,depth-1,antiColor,alpha,beta) 
 			value = tt[0]
+			#print(action,value)
 			if value>=beta:
 				return [beta,action]
 
@@ -263,6 +270,7 @@ class chessCom:
 				antiMoves += len(possibleMoves)
 				antiMaterial += self.wtKing
 
+		#print(moves,antiMoves)
 		mobility = (moves - antiMoves)
 		mat = (material - antiMaterial)
 		mob_mat = [mat,mobility]
